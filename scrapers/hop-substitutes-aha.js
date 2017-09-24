@@ -1,6 +1,5 @@
 var defaultMatch = 0.5;
-var source = 'https://www.homebrewersassociation.org/how-to-brew/hop-substitutions/';
-var rows = document.querySelectorAll('table tr');
+var rows = document.querySelectorAll(selector);
 
 // select all rows but the first
 var substitutes = [...rows].slice(1).map(function(row) {
@@ -56,3 +55,4 @@ var substitutes = [...rows].slice(1).map(function(row) {
         source: source
     }
 }).filter(function(sub) { return sub; });
+substitutes;

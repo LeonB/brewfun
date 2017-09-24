@@ -1,5 +1,4 @@
 var defaultMatch = 0.8;
-var source = 'http://www.brew365.com/hop_substitution_chart.php';
 var rows = document.querySelectorAll('table tr');
 
 // select all rows but the first
@@ -56,6 +55,6 @@ var substitutes = [...rows].slice(1).map(function(row, i) {
         },
         substitutes: substitutes,
         source: source
-    }
+    };
 }).filter(function(sub) { return sub; });
 substitutes;
