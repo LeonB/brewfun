@@ -1,4 +1,5 @@
 var defaultMatch = 0.5;
+var source = 'https://www.homebrewersassociation.org/how-to-brew/hop-substitutions/';
 var rows = document.querySelectorAll('table tr');
 
 // select all rows but the first
@@ -51,6 +52,7 @@ var substitutes = [...rows].slice(1).map(function(row) {
             name: hopName,
             country: country,
         },
-        substitutes: substitutes
+        substitutes: substitutes,
+        source: source
     }
 }).filter(function(sub) { return sub; });
