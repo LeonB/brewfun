@@ -46,3 +46,5 @@
   cronjob
 - ctrl+shift+p functionality
 - scriptable
+- track recipe versions and branches / copies (git?)
+- plot graph of recipe styles / abv / hoppiness / color
