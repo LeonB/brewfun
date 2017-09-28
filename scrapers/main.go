@@ -15,6 +15,7 @@ type scraper struct {
 	jsFile   string
 	url      string
 	selector string
+	match    float64
 }
 
 func main() {
@@ -31,31 +32,34 @@ func main() {
 	}
 
 	scrapers := []scraper{
-		// scraper{
-		// 	jsFile:   "hop-substitutes-brew365.js",
-		// 	url:      "http://www.brew365.com/hop_substitution_chart.php",
-		// 	selector: "table tr",
-		// },
+		scraper{
+			jsFile:   "hop-substitutes-brew365.js",
+			url:      "http://www.brew365.com/hop_substitution_chart.php",
+			selector: "table tr",
+			match:    0.8,
+		},
 		// scraper{
 		// 	jsFile:   "hop-substitutes-aha.js",
 		// 	url:      "https://www.homebrewersassociation.org/how-to-brew/hop-substitutions/",
 		// 	selector: "table tr",
+		// 	match:    0.5,
 		// },
-		scraper{
-			jsFile:   "hop-substitutes-homebrewstuff.js",
-			url:      "http://www.homebrewstuff.com/hop-profiles",
-			selector: ".std",
-		},
+		// scraper{
+		// 	jsFile:   "hop-substitutes-homebrewstuff.js",
+		// 	url:      "http://www.homebrewstuff.com/hop-profiles",
+		// 	selector: ".std",
+		// 	match:    0.5,
+		// },
 	}
 
-	charts := []brewfun.HopSubstitutionChart{}
+	substitutes := brewfun.HopSubstitutes{}
 	for _, scraper := range scrapers {
-		chart, err := retrieveHopSubstitutes(ctxt, c, scraper)
+		subs, err := retrieveHopSubstitutes(ctxt, c, scraper)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		charts = append(charts, chart)
+		substitutes = append(substitutes, subs...)
 	}
 
 	// shutdown chrome
@@ -71,19 +75,20 @@ func main() {
 	}
 
 	// @TODO: aggregate results?
+	// @TODO: remove double entries?
 
-	b, _ := json.MarshalIndent(charts, "", "   ")
+	b, _ := json.MarshalIndent(substitutes, "", "   ")
 	log.Println(string(b))
 }
 
-func retrieveHopSubstitutes(ctxt context.Context, client *chromedp.CDP, scraper scraper) (brewfun.HopSubstitutionChart, error) {
+func retrieveHopSubstitutes(ctxt context.Context, client *chromedp.CDP, scraper scraper) (brewfun.HopSubstitutes, error) {
 	// run expression
-	var res brewfun.HopSubstitutionChart
+	substitutes := brewfun.HopSubstitutes{}
 
 	// retrieve javascript
 	byt, err := ioutil.ReadFile(scraper.jsFile)
 	if err != nil {
-		return res, err
+		return substitutes, err
 	}
 	expr := string(byt)
 
@@ -92,7 +97,8 @@ func retrieveHopSubstitutes(ctxt context.Context, client *chromedp.CDP, scraper 
 		chromedp.WaitReady(scraper.selector, chromedp.ByQuery),
 		chromedp.Evaluate(fmt.Sprintf("var source = '%s';", scraper.url), &[]byte{}),
 		chromedp.Evaluate(fmt.Sprintf("var selector = '%s';", scraper.selector), &[]byte{}),
-		chromedp.Evaluate(expr, &res),
+		chromedp.Evaluate(fmt.Sprintf("var defaultMatch = %f;", scraper.match), &[]byte{}),
+		chromedp.Evaluate(expr, &substitutes),
 	})
-	return res, err
+	return substitutes, err
 }

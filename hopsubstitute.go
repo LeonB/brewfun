@@ -1,18 +1,12 @@
 package brewfun
 
-type HopSubstitutionChart []HopSubstitutionChartEntry
-
-type HopSubstitutionChartEntry struct {
-	Hop         Hop            `json:"hop"`
-	Substitutes HopSubstitutes `json:"substitutes"`
-	Source      string         `json:"source"`
-}
-
 type HopSubstitutes []HopSubstitute
 
 type HopSubstitute struct {
-	Hop   Hop     `json:"hop"`
-	Match float64 `json:"match"`
+	HopA   Hop     `json:"hopA"`
+	HopB   Hop     `json:"hopB"`
+	Match  float64 `json:"match"`
+	Source string  `json:"source"`
 }
 
 type Hop struct {

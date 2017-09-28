@@ -1,5 +1,20 @@
-var defaultMatch = 0.5;
+// var defaultMatch = 0.5;
 var rows = document.querySelectorAll(selector);
+
+function findCountry(hopName, country) {
+    // match country
+    if (hopName.includes('(') && hopName.includes(')')) {
+        var matches = hopName.match(/(.*)\s\((.*)\)/);
+
+        // @TODO: check if what's between the brackets is really a country and
+        // not some annotation
+
+        hopName = matches[1];
+        country = matches[2];
+    }
+
+    return [hopName, country];
+}
 
 // select all rows but the first
 var substitutes = [...rows].slice(1).map(function(row) {
@@ -14,13 +29,8 @@ var substitutes = [...rows].slice(1).map(function(row) {
     hopName = hopName.trim();
     substitutes = substitutes.map(function(sub) { return sub.trim(); });
 
-    // match country
-    var country = null;
-    if (hopName.includes('(') && hopName.includes(')')) {
-        var matches = hopName.match(/(.*)\s\((.*)\)/);
-        hopName = matches[1];
-        country = matches[2];
-    }
+    // try to get country from hop name
+    var [hopName, country] = findCountry(hopName, country);
 
     // convert substitutes to objects
     substitutes = substitutes.map(function(sub) {
@@ -28,16 +38,15 @@ var substitutes = [...rows].slice(1).map(function(row) {
         var match = defaultMatch;
         var country = null;
 
-        // match country
-        var country = null;
-        if (name.includes('(') && name.includes(')')) {
-            var matches = name.match(/(.*)\s\((.*)\)/);
-            name = matches[1];
-            country = matches[2];
-        }
+        // try to get country from hop name
+        var [name, country] = findCountry(name, country);
 
         return {
-            hop: {
+            hopA: {
+                name: null,
+                country: null,
+            },
+            hopB: {
                 name: name,
                 country: country
             },
@@ -45,14 +54,22 @@ var substitutes = [...rows].slice(1).map(function(row) {
         };
     });
 
-    // return complete substitution object
-    return {
-        hop: {
+    // return complete hopSubsitutes array
+    return substitutes.map(function(sub) {
+        sub.hopA = {
             name: hopName,
             country: country,
-        },
-        substitutes: substitutes,
-        source: source
-    }
-}).filter(function(sub) { return sub; });
+        };
+        sub.source = source;
+        return sub;
+    });
+});
+
+// flatten
+substitutes = [].concat.apply([], substitutes);
+
+// remove empty values
+substitutes = substitutes.filter(function(sub) { return sub; });
+
+// output to be marshalled
 substitutes;
