@@ -50,6 +50,24 @@ func main() {
 		// 	selector: ".std",
 		// 	match:    0.5,
 		// },
+		// scraper{
+		// 	jsFile:   "hop-substitutes-beersmith.js",
+		// 	url:      "http://beersmith.com/hop-list/",
+		// 	selector: ".std",
+		// 	match:    0.5,
+		// },
+		// scraper{
+		// 	jsFile:   "hop-substitutes-beersmith.js",
+		// 	url:      "http://www.hopslist.com/wp-content/uploads/2016/06/Hopslist_Substitutes_2014-03.pdf",
+		// 	selector: ".std",
+		// 	match:    0.5,
+		// },
+		// scraper{
+		// 	jsFile:   "hop-substitutes-beersmith.js",
+		// 	url:      "http://www.hopslist.com/wp-content/uploads/2016/06/Hopslist_Substitutes_2014-03.pdf",
+		// 	selector: ".std",
+		// 	match:    0.5,
+		// },
 	}
 
 	substitutes := brewfun.HopSubstitutes{}
