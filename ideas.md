@@ -31,6 +31,7 @@
 - water suggestion based on style
 - style proposer
 - keyboard driven
+- calculate absorption of hops
 
 ## dream
 

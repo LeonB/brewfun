@@ -1,1 +1,3 @@
 /vendor/
+/db/brewfun.sqlite3
+/db/brewfun.sqlite3-journal

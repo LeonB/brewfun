@@ -32,6 +32,12 @@
   revision = "2a92e673c9a6302dd05c3a691ae1f24aef46457d"
 
 [[projects]]
+  name = "github.com/mattes/migrate"
+  packages = [".","database","source"]
+  revision = "035c07716cd373d88456ec4d701402df52584cb4"
+  version = "v3.0.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/image"
   packages = ["bmp","tiff","tiff/lzw"]
@@ -40,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fe6d7e6bb1f2d0c2e14098aaf7b1ea602ae2c49b7c38441c4b2f7b019a9a9819"
+  inputs-digest = "276a3aaf7d5ab0ff0aed38218e9e21a49fe695a7beae837c7eec0b7bdd63c10c"
   solver-name = "gps-cdcl"
   solver-version = 1
