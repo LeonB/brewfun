@@ -3,6 +3,7 @@ CREATE TABLE  IF NOT EXISTS`hops` (
 	`name`							TEXT NOT NULL,
 	`country`						TEXT,
 	`description`					TEXT,
+	`source`						TEXT,
 	`hop_use_id`					INTEGER,
 	`hop_storage_index`				DECIMAL(3, 1),
 	`alpha_acid_percentage_min`		DECIMAL(3, 1),

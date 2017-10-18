@@ -32,10 +32,22 @@
   revision = "2a92e673c9a6302dd05c3a691ae1f24aef46457d"
 
 [[projects]]
+  branch = "master"
   name = "github.com/mattes/migrate"
-  packages = [".","database","source"]
-  revision = "035c07716cd373d88456ec4d701402df52584cb4"
-  version = "v3.0.1"
+  packages = [".","database","database/sqlite3","source","source/file"]
+  revision = "5b98c13eff7657ab49a1a5f705b72f961d7fc558"
+
+[[projects]]
+  name = "github.com/mattn/go-sqlite3"
+  packages = ["."]
+  revision = "ca5e3819723d8eeaf170ad510e7da1d6d2e94a08"
+  version = "v1.2.0"
+
+[[projects]]
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
 
 [[projects]]
   branch = "master"
@@ -43,9 +55,15 @@
   packages = ["bmp","tiff","tiff/lzw"]
   revision = "e20db36d77bd0cb36cea8fe49d5c37d82d21591f"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "1087133bc4af3073e18add999345c6ae75918503"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "276a3aaf7d5ab0ff0aed38218e9e21a49fe695a7beae837c7eec0b7bdd63c10c"
+  inputs-digest = "742c5ce7db061e7e241670203812c152d5fd18640e0fbf7e912a4dd8050ba489"
   solver-name = "gps-cdcl"
   solver-version = 1
