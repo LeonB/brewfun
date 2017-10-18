@@ -20,8 +20,6 @@ CREATE TABLE  IF NOT EXISTS`hops` (
 	`myrcene_percentage_max`		DECIMAL(3, 1),
 	/* `linalool_percentage_min`		DECIMAL(3, 1), */
 	/* `linalool_percentage_max`		DECIMAL(3, 1), */
-	`myrcene_percentage_min`		DECIMAL(3, 1),
-	`myrcene_percentage_max`		DECIMAL(3, 1),
 	`caryophyllene_percentage_min`	DECIMAL(3, 1),
 	`caryophyllene_percentage_max`	DECIMAL(3, 1),
 	`farnesene_percentage_min`		DECIMAL(3, 1),
