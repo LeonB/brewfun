@@ -28,6 +28,6 @@ CREATE TABLE  IF NOT EXISTS`hops` (
 	`humulene_percentage_max`		DECIMAL(3, 1),
 	/* `geraniol_percentage_min`		DECIMAL(3, 1), */
 	/* `geraniol_percentage_max`		DECIMAL(3, 1), */
-	FOREIGN KEY(`hop_use_id`) REFERENCES hop_uses
+	FOREIGN KEY(`hop_use_id`) REFERENCES hop_uses(id)
 );
 CREATE INDEX hop_use_id ON hops(hop_use_id);

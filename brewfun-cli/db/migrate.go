@@ -10,8 +10,12 @@ import (
 	"github.com/urfave/cli"
 )
 
+const (
+	databaseName = "sqlite3"
+)
+
 func Migrate() *cli.ExitError {
-	db, err := sql.Open("sqlite3", "test.sqlite3")
+	db, err := sql.Open(databaseName, "test.sqlite3?_foreign_keys=1")
 	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
 	if err != nil {
 		err = fmt.Errorf("%s test.sqlite3", err)
@@ -20,11 +24,17 @@ func Migrate() *cli.ExitError {
 
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://../db/migrations",
-		"sqlite3", driver)
+		databaseName, driver)
 	if err != nil {
 		return cli.NewExitError(err, 2)
 	}
 
 	err = m.Up()
-	return cli.NewExitError(err, 2)
+	if err == nil {
+		return nil
+	}
+	if err == migrate.ErrNoChange {
+		return nil
+	}
+	return cli.NewExitError(err, 3)
 }

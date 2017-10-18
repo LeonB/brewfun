@@ -30,7 +30,11 @@ func main() {
 					Name:  "migrate",
 					Usage: "run migrations",
 					Action: func(c *cli.Context) error {
-						return db.Migrate()
+						err := db.Migrate()
+						if err != nil {
+							return err
+						}
+						return nil
 					},
 				},
 				{
