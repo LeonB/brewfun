@@ -17,6 +17,7 @@ const (
 
 func Migrate() *cli.ExitError {
 	m, exitErr := getMigrate()
+	defer m.Close()
 	if exitErr != nil {
 		return exitErr
 	}
@@ -34,6 +35,7 @@ func Migrate() *cli.ExitError {
 
 func Rollback() *cli.ExitError {
 	m, exitErr := getMigrate()
+	defer m.Close()
 	if exitErr != nil {
 		return exitErr
 	}
@@ -60,6 +62,7 @@ func Rollback() *cli.ExitError {
 
 func Drop() *cli.ExitError {
 	m, exitErr := getMigrate()
+	defer m.Close()
 	if exitErr != nil {
 		return exitErr
 	}
@@ -71,7 +74,7 @@ func Drop() *cli.ExitError {
 	}
 
 	// roll back every migration
-	err := m.Down()
+	err := m.Drop()
 	if err == nil {
 		return nil
 	}
