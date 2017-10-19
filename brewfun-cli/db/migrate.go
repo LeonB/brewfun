@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/mattes/migrate"
 	"github.com/mattes/migrate/database/sqlite3"
@@ -76,5 +77,19 @@ func getMigrate() (*migrate.Migrate, *cli.ExitError) {
 		return m, cli.NewExitError(err, 2)
 	}
 
+	log := &logger{}
+	m.Log = log
+
 	return m, nil
+}
+
+type logger struct {
+}
+
+func (l *logger) Printf(format string, v ...interface{}) {
+	log.Printf(format, v)
+}
+
+func (l *logger) Verbose() bool {
+	return true
 }
