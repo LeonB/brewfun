@@ -41,7 +41,10 @@ func main() {
 					Name:  "rollback",
 					Usage: "rollback migrations",
 					Action: func(c *cli.Context) error {
-						fmt.Println("new task template: ", c.Args().First())
+						err := db.Rollback()
+						if err != nil {
+							return err
+						}
 						return nil
 					},
 				},

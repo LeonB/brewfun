@@ -15,21 +15,13 @@ const (
 )
 
 func Migrate() *cli.ExitError {
-	db, err := sql.Open(databaseName, "test.sqlite3?_foreign_keys=1")
-	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
-	if err != nil {
-		err = fmt.Errorf("%s test.sqlite3", err)
-		return cli.NewExitError(err, 1)
+	m, exitErr := getMigrate()
+	if exitErr != nil {
+		return exitErr
 	}
 
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://../db/migrations",
-		databaseName, driver)
-	if err != nil {
-		return cli.NewExitError(err, 2)
-	}
-
-	err = m.Up()
+	// run all pending migrations
+	err := m.Up()
 	if err == nil {
 		return nil
 	}
@@ -37,4 +29,52 @@ func Migrate() *cli.ExitError {
 		return nil
 	}
 	return cli.NewExitError(err, 3)
+}
+
+func Rollback() *cli.ExitError {
+	m, exitErr := getMigrate()
+	if exitErr != nil {
+		return exitErr
+	}
+
+	// check version: if version == 0 == no migrations: do nothing
+	version, _, _ := m.Version()
+	if version == 0 {
+		return nil
+	}
+
+	// roll back one step
+	err := m.Steps(-1)
+	if err == nil {
+		return nil
+	}
+
+	// no change: don't report error
+	if err == migrate.ErrNoChange {
+		return nil
+	}
+
+	return cli.NewExitError(err, 5)
+}
+
+func getMigrate() (*migrate.Migrate, *cli.ExitError) {
+	// m, err := migrate.New(
+	// 	"file://../db/migrations",
+	// 	"sqlite3://test.sqlite3?_foreign_keys=1")
+
+	db, err := sql.Open(databaseName, "test.sqlite3?_foreign_keys=1")
+	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
+	if err != nil {
+		err = fmt.Errorf("%s test.sqlite3", err)
+		return nil, cli.NewExitError(err, 1)
+	}
+
+	m, err := migrate.NewWithDatabaseInstance(
+		"file://../db/migrations",
+		databaseName, driver)
+	if err != nil {
+		return m, cli.NewExitError(err, 2)
+	}
+
+	return m, nil
 }
