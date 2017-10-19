@@ -48,6 +48,28 @@ func main() {
 						return nil
 					},
 				},
+				{
+					Name:  "drop",
+					Usage: "drop database",
+					Action: func(c *cli.Context) error {
+						err := db.Drop()
+						if err != nil {
+							return err
+						}
+						return nil
+					},
+				},
+				{
+					Name:  "reset",
+					Usage: "reset database",
+					Action: func(c *cli.Context) error {
+						err := db.Reset()
+						if err != nil {
+							return err
+						}
+						return nil
+					},
+				},
 			},
 		},
 	}

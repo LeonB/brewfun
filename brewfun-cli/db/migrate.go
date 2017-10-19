@@ -58,6 +58,36 @@ func Rollback() *cli.ExitError {
 	return cli.NewExitError(err, 5)
 }
 
+func Drop() *cli.ExitError {
+	m, exitErr := getMigrate()
+	if exitErr != nil {
+		return exitErr
+	}
+
+	// check version: if version == 0 == no migrations: do nothing
+	version, _, _ := m.Version()
+	if version == 0 {
+		return nil
+	}
+
+	// roll back every migration
+	err := m.Down()
+	if err == nil {
+		return nil
+	}
+
+	return cli.NewExitError(err, 6)
+}
+
+func Reset() *cli.ExitError {
+	exitErr := Drop()
+	if exitErr != nil {
+		return exitErr
+	}
+
+	return Migrate()
+}
+
 func getMigrate() (*migrate.Migrate, *cli.ExitError) {
 	// m, err := migrate.New(
 	// 	"file://../db/migrations",
